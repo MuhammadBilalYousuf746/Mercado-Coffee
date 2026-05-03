@@ -1,10 +1,25 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MERCADO_MENU } from '../data/menuData';
+import { motion } from 'framer-motion'; //
 
 const categories = MERCADO_MENU.map(section => ({
   label: section.shortTitle || section.title,
   id: section.id
 }));
+
+// Animation Variants (Logic ko touch nahi kiya, sirf styles hain)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 } // Items ka delay
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 }
+};
 
 const CategoryBar = ({ onCategoryClick, activeCategory }) => {
   const scrollRef = useRef(null);
@@ -17,7 +32,6 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
   const animFrame = useRef(null);
   const [dragged, setDragged] = useState(false);
 
-  // Active button ko center mein auto-scroll karo
   useEffect(() => {
     if (!activeCategory || !scrollRef.current) return;
     const btn = buttonRefs.current[activeCategory];
@@ -68,8 +82,11 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
 
   return (
     <div className="w-full sticky top-0 z-40 border-t border-zinc-800">
-      <div
+      <motion.div
         ref={scrollRef}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
@@ -83,8 +100,9 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
         "
       >
         {categories.map((cat) => (
-          <button
+          <motion.button
             key={cat.id}
+            variants={itemVariants}
             ref={(el) => (buttonRefs.current[cat.id] = el)}
             onClick={(e) => handleClick(e, cat.id)}
             className="
@@ -100,9 +118,9 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
               className={`absolute bottom-0 left-0 h-[2px] bg-[#C5A267] transition-all duration-200
                 ${activeCategory === cat.id ? 'w-full' : 'w-0 group-hover:w-full'}`}
             />
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
