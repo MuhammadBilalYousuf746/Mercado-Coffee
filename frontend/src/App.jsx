@@ -1,22 +1,47 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Menu from './pages/Menu'; 
-import HeroSection from './components/HeroSection'; // HeroSection import karein
+import HeroSection from './components/HeroSection';
+import CartDrawer from './components/CartDrawer';
+import Checkout from './pages/Checkout';
+import OurStory from './pages/OurStory'; // Ensure these files exist in src/pages/
+import FAQs from './pages/FAQs';
+import Privacy from './pages/Privacy';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <Navbar />
-      
-      {/* Hero Section yahan aayega, Navbar ke foran baad */}
-      <HeroSection />
+    <Router>
+      <div className="min-h-screen bg-white flex flex-col">
+        {/* Navigation components fixed at top/global */}
+        <Navbar />
+        <CartDrawer /> 
 
-      {/* Menu component niche continue hoga */}
-      <Menu />
+        <main className="flex-grow">
+          <Routes>
+            {/* Main Home Page */}
+            <Route path="/" element={
+              <>
+                <HeroSection />
+                <Menu />
+              </>
+            } />
 
-      <Footer />
-    </div>
-  )
+            {/* Checkout Page */}
+            <Route path="/checkout" element={<Checkout />} />
+
+            {/* Support & Brand Pages */}
+            <Route path="/our-story" element={<OurStory />} />
+            <Route path="/faqs" element={<FAQs />} />
+            <Route path="/faq" element={<FAQs />} /> {/* Single string path for stability */}
+            <Route path="/privacy-policy" element={<Privacy />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 export default App;

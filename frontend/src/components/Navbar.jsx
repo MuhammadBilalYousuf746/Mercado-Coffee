@@ -3,13 +3,20 @@ import logo from '../assets/logo/logo.png';
 import { FaPhoneAlt, FaChevronDown } from 'react-icons/fa';
 import { HiOutlineShoppingBag, HiMenuAlt2 } from 'react-icons/hi';
 import NavDrawer from './NavDrawer';
+import CartDrawer from './CartDrawer';
+import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [location, setLocation] = useState("Gulistan-e-Johar");
+  
+  const navigate = useNavigate();
+  const { cart, setIsCartOpen } = useCart();
 
   const fetchLocation = () => {
     if (navigator.geolocation) {
+      // Timeout add kiya taake agar GPS slow ho toh stuck na ho
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
         try {
@@ -18,11 +25,14 @@ function Navbar() {
           const area = data.address.suburb || data.address.city || "Karachi";
           setLocation(area);
         } catch (error) { console.error(error); }
-      });
+      }, (err) => console.log("Location denied"), { timeout: 5000 });
     }
   };
 
-  useEffect(() => { fetchLocation(); }, []);
+  // Mount par foran fetch karne ke bajaye checks lagaye hain
+  useEffect(() => { 
+    fetchLocation(); 
+  }, []);
 
   return (
     <>
@@ -47,10 +57,14 @@ function Navbar() {
         </div>
 
         {/* Logo */}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2
-                        w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24
-                        bg-black border-4 border-black rounded-full
-                        flex items-center justify-center z-50 overflow-hidden shadow-lg">
+        <div 
+          onClick={() => navigate('/')} 
+          className="absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2
+                     w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24
+                     bg-black border-4 border-black rounded-full
+                     flex items-center justify-center z-50 overflow-hidden shadow-lg 
+                     cursor-pointer active:scale-95 transition-transform"
+        >
           <img src={logo} alt="Logo" className="w-full h-full object-contain p-1.5 sm:p-2 md:p-3" />
         </div>
 
@@ -60,16 +74,20 @@ function Navbar() {
             <FaPhoneAlt className="text-base sm:text-xl" />
           </button>
 
-          <div className="relative cursor-pointer hover:text-stone-400 transition-colors p-1">
+          <div 
+            onClick={() => setIsCartOpen(true)} 
+            className="relative cursor-pointer hover:text-stone-400 transition-colors p-1"
+          >
             <HiOutlineShoppingBag className="text-xl sm:text-[26px]" />
             <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-white text-[#3E4235] text-[9px] sm:text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full border border-black shadow-sm">
-              0
+              {cart.length}
             </span>
           </div>
         </div>
       </nav>
 
       <NavDrawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
+      <CartDrawer />
     </>
   );
 }

@@ -4,6 +4,7 @@ export const MERCADO_MENU = [
     title: "Eggs & Classics",
     shortTitle: "Eggs",
     description: "Signature morning platters and egg specialties",
+    customizationType: "breakfast",
     items: [
       { id: 1, name: "Heritage Masala Omelette", price: 899, desc: "Delicately spiced Pakistani-style omelette" },
       { id: 2, name: "Classic French Omelette", price: 1199, desc: "Silky folded eggs finished with butter and cheese" },
@@ -19,6 +20,7 @@ export const MERCADO_MENU = [
     title: "Morning Indulgences",
     shortTitle: "Breakfast",
     description: "Sweet and golden breakfast favourites",
+    customizationType: "breakfast",
     items: [
       { id: 8, name: "Buttermilk Pancakes", price: 1060, desc: "Light, fluffy, house-made pancakes" },
       { id: 9, name: "Brioche French Toast", price: 800, desc: "Golden-fried brioche with a delicate sweetness" },
@@ -31,6 +33,7 @@ export const MERCADO_MENU = [
     title: "Signature Hot Coffee",
     shortTitle: "Hot Coffee",
     description: "Crafted for depth, balance, and comfort",
+    customizationType: "coffee",
     items: [
       { id: 101, name: "Americano", price: 480, desc: "Pure espresso softened with hot water" },
       { id: 102, name: "Caffè Latte", price: 580, desc: "Smooth espresso with creamy steamed milk" },
@@ -52,6 +55,7 @@ export const MERCADO_MENU = [
     title: "Iced Coffee Creations",
     shortTitle: "Iced Coffee",
     description: "Bold, refreshing, and expertly chilled",
+    customizationType: "coffee",
     items: [
       { id: 201, name: "Iced Americano", price: 580, desc: "Crisp espresso poured over ice" },
       { id: 202, name: "Iced Latte", price: 680, desc: "Chilled milk paired with bold espresso" },
@@ -74,6 +78,7 @@ export const MERCADO_MENU = [
     title: "Artisan Frappes",
     shortTitle: "Frappes",
     description: "Hand-blended, creamy, and indulgent",
+    customizationType: "coffee",
     items: [
       { id: 301, name: "Caramel Frappe", price: 820, desc: "Velvety caramel blended to perfection" },
       { id: 302, name: "French Vanilla Frappe", price: 820, desc: "Smooth, aromatic, and timeless" },
@@ -90,6 +95,7 @@ export const MERCADO_MENU = [
     title: "Matcha Collection",
     shortTitle: "Matcha",
     description: "Vibrant, ceremonial, and refreshing",
+    customizationType: "coffee",
     items: [
       { id: 401, name: "Blue Matcha Elixir", price: 930, desc: "Butterfly pea flower infused with mango" },
       { id: 402, name: "Pink Matcha Fusion", price: 930, desc: "Dragon fruit blended with red apple" },
@@ -101,6 +107,7 @@ export const MERCADO_MENU = [
     title: "V60 Hand-Brew",
     shortTitle: "V60",
     description: "Slow-brewed for purity and depth",
+    customizationType: "coffee",
     items: [
       { id: 501, name: "V60 Bourbon Hot", price: 780, desc: "Hand-brewed for depth, balance, and complexity" },
       { id: 502, name: "V60 Bourbon Cold", price: 800, desc: "Slow-extracted, crisp, and aromatic" }
@@ -111,6 +118,7 @@ export const MERCADO_MENU = [
     title: "Iced Tea Infusions",
     shortTitle: "Iced Tea",
     description: "Light, refreshing, and fruit-forward",
+    customizationType: "drinks",
     items: [
       { id: 601, name: "Passion Fruit", price: 630, desc: "Bright and tropical" },
       { id: 602, name: "Cranberry", price: 630, desc: "Tart, clean, and refreshing" },
@@ -126,6 +134,7 @@ export const MERCADO_MENU = [
     title: "Mojito Refreshers",
     shortTitle: "Mojito",
     description: "Mint-forward and invigorating",
+    customizationType: "drinks",
     items: [
       { id: 701, name: "Strawberry Mojito", price: 640, desc: "Fresh berries with cooling mint" },
       { id: 702, name: "Blueberry Mojito", price: 640, desc: "Bold berry notes with freshness" },
@@ -137,6 +146,7 @@ export const MERCADO_MENU = [
     title: "Daiquiri Selection",
     shortTitle: "Daiquiri",
     description: "Smooth, fruit-driven elegance",
+    customizationType: "drinks",
     items: [
       { id: 801, name: "Mixed Strawberry Daiquiri", price: 720, desc: "A harmonious blend of seasonal berries" },
       { id: 802, name: "Mango Passion Daiquiri", price: 700, desc: "Tropical smoothness" },
@@ -148,6 +158,7 @@ export const MERCADO_MENU = [
     title: "From the Sea",
     shortTitle: "Seafood",
     description: "Fresh, golden, and indulgent",
+    customizationType: "seafood",
     items: [
       { id: 901, name: "Golden Fillet-O-Fish Burger", price: 1400, desc: "Crispy golden fish fillet in a soft bun" },
       { id: 902, name: "Classic Fish & Chips", price: 1400, desc: "Battered fish, fries and tartare sauce" },
@@ -159,22 +170,11 @@ export const MERCADO_MENU = [
     title: "Crispy Chicken Burgers",
     shortTitle: "Chicken",
     description: "Bold, indulgent, and perfectly stacked",
+    customizationType: "burger",
     items: [
-      {
-        id: 1001, name: "Jalapeño Inferno Zinger", type: "multi-price",
-        prices: { single: 799, double: 999 }, addon: { name: "Fries", price: 200 },
-        desc: "Crispy chicken with Jalapeño heat"
-      },
-      {
-        id: 1002, name: "Titan Zinger", type: "multi-price",
-        prices: { single: 799, double: 999 }, addon: { name: "Fries", price: 200 },
-        desc: "Bold, indulgent, double-stacked"
-      },
-      {
-        id: 1003, name: "Korean Glaze Zinger", type: "multi-price",
-        prices: { single: 1099, double: 1299 }, addon: { name: "Fries", price: 200 },
-        desc: "Sweet-spicy Korean-style glaze"
-      }
+      { id: 1001, name: "Jalapeño Inferno Zinger", type: "multi-price", prices: { single: 799, double: 999 }, addon: { name: "Fries", price: 200 }, desc: "Crispy chicken with Jalapeño heat" },
+      { id: 1002, name: "Titan Zinger", type: "multi-price", prices: { single: 799, double: 999 }, addon: { name: "Fries", price: 200 }, desc: "Bold, indulgent, double-stacked" },
+      { id: 1003, name: "Korean Glaze Zinger", type: "multi-price", prices: { single: 1099, double: 1299 }, addon: { name: "Fries", price: 200 }, desc: "Sweet-spicy Korean-style glaze" }
     ]
   },
   {
@@ -182,26 +182,12 @@ export const MERCADO_MENU = [
     title: "Beef Smash Collection",
     shortTitle: "Beef",
     description: "Smashed, seared, and stacked to perfection",
+    customizationType: "burger",
     items: [
-      {
-        id: 1101, name: "Classic Quarter Pound Smash", type: "multi-price",
-        prices: { single: 850, double: 1250 }, addon: { name: "Fries", price: 200 },
-        desc: "Classic smash burger with bold flavour"
-      },
-      {
-        id: 1102, name: "Double-Double Smash Burger", price: 1199, addon: { name: "Fries", price: 200 },
-        desc: "Double-stacked smash patties"
-      },
-      {
-        id: 1103, name: "Mushroom Beef Burger", type: "multi-price",
-        prices: { single: 1099, double: 1499 }, addon: { name: "Fries", price: 200 },
-        desc: "Earthy mushrooms with a juicy beef patty"
-      },
-      {
-        id: 1104, name: "Mushroom & Gouda Melt", type: "multi-price",
-        prices: { single: 1650, double: 2050 }, addon: { name: "Fries", price: 200 },
-        desc: "Gouda-melted mushroom smash burger"
-      }
+      { id: 1101, name: "Classic Quarter Pound Smash", type: "multi-price", prices: { single: 850, double: 1250 }, addon: { name: "Fries", price: 200 }, desc: "Classic smash burger with bold flavour" },
+      { id: 1102, name: "Double-Double Smash Burger", price: 1199, addon: { name: "Fries", price: 200 }, desc: "Double-stacked smash patties" },
+      { id: 1103, name: "Mushroom Beef Burger", type: "multi-price", prices: { single: 1099, double: 1499 }, addon: { name: "Fries", price: 200 }, desc: "Earthy mushrooms with a juicy beef patty" },
+      { id: 1104, name: "Mushroom & Gouda Melt", type: "multi-price", prices: { single: 1650, double: 2050 }, addon: { name: "Fries", price: 200 }, desc: "Gouda-melted mushroom smash burger" }
     ]
   },
   {
@@ -209,6 +195,7 @@ export const MERCADO_MENU = [
     title: "Wings Selection",
     shortTitle: "Wings",
     description: "Crispy, saucy, and satisfying",
+    customizationType: "sides",
     items: [
       { id: 1201, name: "Classic Crispy Wings", price: 600, desc: "Golden crispy wings, simply perfect" },
       { id: 1202, name: "Korean Glazed Wings", price: 650, desc: "Sweet and spicy Korean glaze" },
@@ -220,6 +207,7 @@ export const MERCADO_MENU = [
     title: "Fries Selection",
     shortTitle: "Fries",
     description: "Crispy on the outside, fluffy inside",
+    customizationType: "sides",
     items: [
       { id: 1301, name: "Sea-Salt Fries", price: 400, desc: "Classic fries with a pinch of sea salt" },
       { id: 1302, name: "Masala Spiced Fries", price: 450, desc: "Fries tossed in signature masala spice" },
@@ -233,6 +221,7 @@ export const MERCADO_MENU = [
     title: "Sandwiches",
     shortTitle: "Sandwiches",
     description: "Artisan breads with premium fillings",
+    customizationType: "mains",
     items: [
       { id: 1401, name: "Croque Monsieur Classique", price: 1300, desc: "Grilled bread, béchamel, turkey and melted cheese" },
       { id: 1402, name: "Artisan Stuffed Grilled Cheese Panini", price: 1200, desc: "Premium cheeses, perfectly toasted" },
@@ -248,6 +237,7 @@ export const MERCADO_MENU = [
     title: "Pasta Classics",
     shortTitle: "Pasta",
     description: "Slow-cooked sauces and al dente pasta",
+    customizationType: "mains",
     items: [
       { id: 1501, name: "Penne Arrabbiata", price: 1200, desc: "Slow-simmered tomato sauce with chili heat" },
       { id: 1502, name: "Creamy Alfredo Pasta", price: 1200, desc: "Rich parmesan cream sauce with crispy chicken" }
@@ -258,6 +248,7 @@ export const MERCADO_MENU = [
     title: "Gourmet Hot Dog",
     shortTitle: "Hot Dog",
     description: "Classic done right",
+    customizationType: "sides",
     items: [
       { id: 1601, name: "Classic Grilled Hot Dog", price: 699, desc: "Grilled to perfection in a soft bun" }
     ]
@@ -267,6 +258,7 @@ export const MERCADO_MENU = [
     title: "Chef's Signature",
     shortTitle: "Chef's",
     description: "The chef's personal masterpiece",
+    customizationType: "mains",
     items: [
       { id: 1701, name: "Parmesan-Crusted Chicken", price: 1690, desc: "Golden parmesan crust with tender chicken" }
     ]
@@ -276,6 +268,7 @@ export const MERCADO_MENU = [
     title: "Bakery Selection",
     shortTitle: "Bakery",
     description: "Hand-rolled and freshly baked daily",
+    customizationType: "default",
     items: [
       { id: 1801, name: "Classic Cheesecake", price: 620, desc: "Smooth baked cheesecake with a buttery biscuit base" },
       { id: 1802, name: "House-Baked Banana Bread", price: 320, desc: "Moist banana loaf with subtle vanilla warmth" },
@@ -294,6 +287,7 @@ export const MERCADO_MENU = [
     title: "Add-Ons",
     shortTitle: "Add-Ons",
     description: "Complete your meal",
+    customizationType: "default",
     items: [
       { id: 1901, name: "Hash Browns", price: 450, desc: "" },
       { id: 1902, name: "Turkey Bacon (2 Pcs)", price: 950, desc: "" },
