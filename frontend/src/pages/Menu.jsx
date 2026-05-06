@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MERCADO_MENU } from '../data/menuData';
-import CategoryBar from '../components/CategoryBar';
+import CategoryBar from '../features/menu/CategoryBar';
 import SearchBar from '../components/SearchBar';
-import DiscountBanner from '../components/DiscountBanner';
-import FeaturedSelections from '../components/FeaturedSelections';
-import MenuSection from '../components/MenuSection';
+import DiscountBanner from '../components/layout/DiscountBanner';
+import FeaturedSelections from '../features/menu/FeaturedSelections';
+import MenuSection from '../features/menu/MenuSection';
 
 const OFFSET = 130;
 
@@ -57,7 +57,7 @@ function Menu() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#32CD32]">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-[#3E4235]">
       <CategoryBar
         onCategoryClick={handleCategoryClick}
         activeCategory={activeCategory}
