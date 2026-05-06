@@ -9,6 +9,28 @@ const BADGES = [
   { icon: '↩️', text: 'Easy Returns'    },
 ];
 
+/* ── Payment Icons SVGs ── */
+const EasypaisaIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 40 40" fill="none" className="opacity-80 grayscale hover:grayscale-0 transition-all">
+    <circle cx="20" cy="20" r="20" fill="#3BB54A"/>
+    <path d="M12 20L18 26L28 14" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const JazzCashIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 40 40" fill="none" className="opacity-80 grayscale hover:grayscale-0 transition-all">
+    <circle cx="20" cy="20" r="20" fill="#FF0000"/>
+    <path d="M10 20H30M20 10V30" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+  </svg>
+);
+
+const CardIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-400">
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+    <line x1="1" y1="10" x2="23" y2="10"/>
+  </svg>
+);
+
 const OrderSummary = ({ cart, cartTotal }) => {
   const gst        = Math.round(cartTotal * GST_RATE);
   const grandTotal = cartTotal + DELIVERY_CHARGES + gst;
@@ -32,7 +54,7 @@ const OrderSummary = ({ cart, cartTotal }) => {
       </div>
 
       {/* Cart items */}
-      <div className="space-y-4 max-h-[260px] overflow-y-auto pr-1 mb-6">
+      <div className="space-y-4 max-h-[260px] overflow-y-auto pr-1 mb-6 scrollbar-hide">
         {cart.map((item, idx) => (
           <motion.div
             key={idx}
@@ -88,6 +110,17 @@ const OrderSummary = ({ cart, cartTotal }) => {
             </span>
           </div>
         ))}
+      </div>
+
+      {/* Accepted Payments Section */}
+      <div className="mt-6 flex flex-col items-center gap-3 py-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+        <span className="text-[8px] font-black text-zinc-400 uppercase tracking-[0.2em]">Accepted Payments</span>
+        <div className="flex items-center gap-4">
+          <EasypaisaIcon />
+          <JazzCashIcon />
+          <CardIcon />
+          <span className="text-[10px] font-black text-zinc-400 uppercase">Cash</span>
+        </div>
       </div>
     </div>
   );
