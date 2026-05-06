@@ -4,33 +4,74 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CheckoutInput from './CheckoutInput';
 import { PAYMENT_METHODS, fmtCard, fmtExpiry, fmtPhone } from '../../utils/checkoutHelpers';
 
+/* ── Professional SVGs ── */
+const EasypaisaLogo = () => (
+  <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="20" fill="#3BB54A"/>
+    <path d="M12 20L18 26L28 14" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const JazzCashLogo = () => (
+  <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="20" fill="#FF0000"/>
+    <path d="M10 20H30M20 10V30" stroke="white" strokeWidth="4" strokeLinecap="round"/>
+  </svg>
+);
+
+const CardIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+    <line x1="1" y1="10" x2="23" y2="10"/>
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
 /* ── Per-method field panels ───────────────────────────── */
 const MobileWalletFields = ({ method, form, set }) => (
   <div className="space-y-4">
-    <div className={`flex items-center gap-3 p-4 rounded-2xl text-sm font-bold
-      ${method === 'easypaisa'
-        ? 'bg-green-50 text-green-800 border border-green-200'
-        : 'bg-red-50   text-red-800   border border-red-200'}`}
-    >
-      <span className="text-xl">{method === 'easypaisa' ? '🟢' : '🔴'}</span>
-      Pay via {method === 'easypaisa' ? 'EasyPaisa' : 'JazzCash'} — enter your registered mobile number
+    <div className="flex items-center gap-3 p-3.5 rounded-xl bg-stone-100 border border-stone-200">
+      <div className="flex-shrink-0">
+        {method === 'easypaisa' ? <EasypaisaLogo /> : <JazzCashLogo />}
+      </div>
+      <p className="text-[11px] font-bold text-stone-600 uppercase tracking-tight">
+        Pay via <span className="text-[#3E4235]">{method}</span> — Exact 11-digit mobile number
+      </p>
     </div>
     <CheckoutInput
-      label={`${method === 'easypaisa' ? 'EasyPaisa' : 'JazzCash'} Account Number`}
+      label={`${method === 'easypaisa' ? 'Easypaisa' : 'JazzCash'} Number (03xxxxxxxxx)`}
       type="tel"
       inputMode="numeric"
       value={form.mobileAccount}
-      onChange={e => set('mobileAccount', fmtPhone(e.target.value))}
+      onChange={e => {
+        const val = e.target.value.replace(/\D/g, ''); // Sirf digits allow karein
+        // 11 digits se upar type karne se rokega
+        if (val.length <= 11) set('mobileAccount', val);
+      }}
       required
       maxLength={11}
+      minLength={11} // Min length also set to 11
+      pattern="[0-9]{11}" // Browser-level validation for exact 11 digits
+      title="Must be exactly 11 digits (e.g., 03001234567)"
+      placeholder="03001234567"
     />
   </div>
 );
 
 const CardFields = ({ form, set }) => (
-  <div className="space-y-4">
+  <div className="space-y-3">
+    <div className="flex justify-end gap-1 mb-1 opacity-60">
+      <div className="w-8 h-5 bg-stone-200 rounded-sm" />
+      <div className="w-8 h-5 bg-stone-200 rounded-sm" />
+    </div>
     <CheckoutInput
-      label="Name on Card"
+      label="Cardholder Name"
       type="text"
       value={form.cardName}
       onChange={e => set('cardName', e.target.value)}
@@ -44,21 +85,15 @@ const CardFields = ({ form, set }) => (
       onChange={e => set('cardNumber', fmtCard(e.target.value))}
       required
       maxLength={19}
+      icon={<CardIcon />}
     />
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-3">
       <CheckoutInput
-        label="Expiry MM/YY"
+        label="Expiry (MM/YY)"
         type="text"
         inputMode="numeric"
         value={form.expiry}
-        onChange={e => {
-          const raw = e.target.value;
-          if (raw.endsWith('/') && form.expiry.length === 4) {
-            set('expiry', raw.slice(0, 2));
-          } else {
-            set('expiry', fmtExpiry(raw));
-          }
-        }}
+        onChange={e => set('expiry', fmtExpiry(e.target.value))}
         required
         maxLength={5}
       />
@@ -72,34 +107,28 @@ const CardFields = ({ form, set }) => (
         maxLength={4}
       />
     </div>
-    <div className="flex items-center gap-2 text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
-      <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
-        <rect x="1" y="5" width="10" height="8" rx="1.5" stroke="#C5A267" strokeWidth="1.5" />
-        <path d="M3.5 5V4a2.5 2.5 0 0 1 5 0v1" stroke="#C5A267" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-      Secured with 256-bit SSL encryption
+    <div className="flex items-center justify-center gap-2 py-2 text-[9px] text-stone-400 font-black uppercase tracking-[0.2em]">
+      <LockIcon />
+      SSL Encrypted & Secure
     </div>
   </div>
 );
 
 const CashFields = ({ form, set, grandTotal }) => (
   <div className="space-y-4">
-    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm font-semibold text-amber-900">
-      💵 You'll pay <span className="font-black">Rs. {grandTotal.toLocaleString()}</span> in cash at delivery
+    <div className="bg-[#F9F5EE] border border-[#E8E0D1] rounded-xl p-5 text-center">
+      <p className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.2em] mb-1">Payable at Door</p>
+      <p className="text-2xl font-serif italic text-[#3E4235]">Rs. {grandTotal.toLocaleString()}</p>
     </div>
-    <div>
-      <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">
-        Change Required? (optional)
+    <div className="relative">
+       <label className="block text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1.5 ml-1">
+        Notes for Rider
       </label>
-      <input
-        type="text"
-        placeholder="e.g. I'll pay with Rs. 2000, please bring change"
+      <textarea
+        placeholder="e.g. Please bring change for Rs. 5000..."
         value={form.cashNote}
         onChange={e => set('cashNote', e.target.value)}
-        className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-4
-          text-sm font-semibold text-zinc-700 outline-none transition-all duration-200
-          focus:border-[#C5A267] focus:ring-2 focus:ring-[#C5A267]/20
-          placeholder:text-zinc-300 placeholder:font-normal"
+        className="w-full bg-white border border-stone-200 rounded-xl px-4 py-3 text-[12px] font-bold text-[#3E4235] outline-none transition-all focus:border-[#C5A267] min-h-[70px] resize-none"
       />
     </div>
   </div>
@@ -109,85 +138,87 @@ const CashFields = ({ form, set, grandTotal }) => (
 const PaymentSection = ({ form, set, grandTotal, onBack }) => (
   <motion.div
     key="step2"
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-    transition={{ duration: 0.25 }}
-    className="space-y-5"
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    className="space-y-6"
   >
-    {/* Method selector */}
-    <div className="grid grid-cols-2 gap-3">
+    {/* Responsive Method Selector: grid-cols-1 on mobile, sm:grid-cols-2 on larger */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
       {PAYMENT_METHODS.map(m => {
         const active = form.paymentMethod === m.id;
         return (
           <label
             key={m.id}
-            className={`relative p-4 rounded-2xl border-2 cursor-pointer flex items-center
-              gap-3 transition-all duration-200
-              ${active ? 'border-zinc-900 bg-zinc-900 shadow-xl' : 'border-zinc-100 bg-white hover:border-zinc-300'}`}
+            className={`relative p-3.5 rounded-xl border transition-all duration-300 cursor-pointer flex items-center gap-3
+              ${active ? 'border-[#3E4235] bg-[#3E4235] shadow-lg' : 'border-stone-100 bg-white hover:border-stone-200'}`}
           >
             <input
               type="radio" name="payment" className="hidden"
               value={m.id} checked={active}
               onChange={e => set('paymentMethod', e.target.value)}
             />
-            <span className="text-xl leading-none">{m.icon}</span>
-            <span className={`font-black text-[11px] uppercase tracking-wide leading-tight
-              ${active ? 'text-white' : 'text-zinc-700'}`}
+            {/* Logic to show SVG or Icon */}
+            <div className={`flex-shrink-0 transition-all duration-300 ${active ? 'scale-90' : 'grayscale opacity-70'}`}>
+              {m.id === 'easypaisa' ? <EasypaisaLogo /> : 
+               m.id === 'jazzcash' ? <JazzCashLogo /> : 
+               m.id === 'card' ? <CardIcon /> : 
+               <span className="text-lg">💵</span>}
+            </div>
+            <span className={`font-black text-[9px] uppercase tracking-tight
+              ${active ? 'text-white' : 'text-stone-500'}`}
             >
               {m.label}
             </span>
             {active && (
-              <motion.div
-                layoutId="paycheck"
-                className="absolute top-2 right-2 w-4 h-4 bg-[#C5A267] rounded-full
-                  flex items-center justify-center text-[8px] text-white font-black"
-              >✓</motion.div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#C5A267] rounded-full flex items-center justify-center shadow-sm">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
             )}
           </label>
         );
       })}
     </div>
 
-    {/* Animated field swap */}
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={form.paymentMethod}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.22 }}
-      >
-        {(form.paymentMethod === 'easypaisa' || form.paymentMethod === 'jazzcash') && (
-          <MobileWalletFields method={form.paymentMethod} form={form} set={set} />
-        )}
-        {form.paymentMethod === 'card' && (
-          <CardFields form={form} set={set} />
-        )}
-        {form.paymentMethod === 'cash' && (
-          <CashFields form={form} set={set} grandTotal={grandTotal} />
-        )}
-      </motion.div>
-    </AnimatePresence>
+    {/* Content Area */}
+    <div className="min-h-[200px]">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={form.paymentMethod}
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.2 }}
+        >
+          {(form.paymentMethod === 'easypaisa' || form.paymentMethod === 'jazzcash') && (
+            <MobileWalletFields method={form.paymentMethod} form={form} set={set} />
+          )}
+          {form.paymentMethod === 'card' && (
+            <CardFields form={form} set={set} />
+          )}
+          {form.paymentMethod === 'cash' && (
+            <CashFields form={form} set={set} grandTotal={grandTotal} />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </div>
 
-    {/* Actions */}
-    <div className="flex gap-3 pt-2">
+    {/* Actions: Responsive gap and padding */}
+    <div className="flex gap-2 sm:gap-3 pt-4 border-t border-stone-100">
       <button
         type="button"
         onClick={onBack}
-        className="px-6 py-5 rounded-2xl font-black uppercase tracking-widest text-[11px]
-          border-2 border-zinc-200 text-zinc-500 transition-all active:scale-[0.98]
-          hover:border-zinc-400 hover:text-zinc-800"
+        className="px-4 sm:px-6 py-4 rounded-xl font-bold uppercase tracking-widest text-[9px] border border-stone-200 text-stone-400 hover:text-stone-800 transition-all active:scale-95 flex-shrink-0"
       >
-        ← Back
+        Back
       </button>
       <button
         type="submit"
-        className="flex-1 bg-[#1a1611] text-white py-5 rounded-2xl font-black uppercase
-          tracking-[0.2em] text-xs shadow-xl transition-all duration-300
-          hover:bg-[#C5A267] hover:shadow-[#C5A267]/30 active:scale-[0.98]"
+        className="flex-1 bg-[#3E4235] text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl hover:bg-[#2A2D24] transition-all active:scale-95"
       >
-        Place Order · Rs. {grandTotal.toLocaleString()}
+        Confirm Order · Rs. {grandTotal.toLocaleString()}
       </button>
     </div>
   </motion.div>
