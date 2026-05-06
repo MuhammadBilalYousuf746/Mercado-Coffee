@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { IoChevronForward } from "react-icons/io5";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
   { name: 'Menu', path: '/' },
@@ -9,9 +10,10 @@ const navLinks = [
   { name: 'Privacy', path: '/privacy-policy' }
 ];
 
-const ANIMATION_DURATION = 300;
-
 function NavDrawer({ isOpen, setIsOpen }) {
+  const touchStartPos = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
@@ -22,20 +24,45 @@ function NavDrawer({ isOpen, setIsOpen }) {
     setIsOpen(false);
   }, [setIsOpen]);
 
+  const handleMenuClick = useCallback((e) => {
+    e.preventDefault();
+    closeDrawer();
+    if (location.pathname === '/') {
+      window.scrollTo(0, 0);
+    } else {
+      navigate('/', { replace: true });
+    }
+  }, [location.pathname, navigate, closeDrawer]);
+
+  const handleTouchStart = (e) => {
+    touchStartPos.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStartPos.current) return;
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchStartPos.current - currentTouch;
+    if (diff > 50) {
+      closeDrawer();
+      touchStartPos.current = null;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartPos.current = null;
+  };
+
   const scrollToFooter = useCallback((e) => {
     e.preventDefault();
     closeDrawer();
-
-    setTimeout(() => {
-      const footer = document.querySelector('footer');
-      footer?.scrollIntoView({ behavior: 'smooth' });
-    }, ANIMATION_DURATION);
+    const footer = document.querySelector('footer');
+    footer?.scrollIntoView({ behavior: 'auto' });
   }, [closeDrawer]);
 
   return (
     <>
-      <div 
-        className={`fixed inset-0 bg-black/60 z-[60] transition-opacity duration-300 ${
+      <div
+        className={`fixed inset-0 bg-black/60 z-[60] transition-opacity duration-200 ${
           isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={(e) => {
@@ -43,50 +70,83 @@ function NavDrawer({ isOpen, setIsOpen }) {
         }}
       />
 
-      {/* Drawer */}
-      <div className={`fixed top-0 left-0 h-full w-[85%] sm:w-80 bg-[#3E4235] z-[70] shadow-2xl transform transition-transform duration-500 ease-in-out ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className={`fixed top-0 left-0 h-full w-[78%] max-w-[310px] bg-[#3E4235] z-[70] shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        {/* Gold top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-[#C5A267] opacity-70" />
 
-        <div className="flex justify-end p-6">
-          <button 
+        {/* Close button */}
+        <div className="flex justify-end px-[18px] pt-[18px]">
+          <button
             type="button"
             aria-label="Close menu"
-            onClick={closeDrawer} 
-            className="text-white hover:rotate-90 transition-transform duration-300 p-1 focus:outline-none focus:ring-2 focus:ring-white/50"
+            onClick={closeDrawer}
+            className="w-[34px] h-[34px] rounded-full flex items-center justify-center focus:outline-none"
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              border: '0.5px solid rgba(255,255,255,0.12)'
+            }}
           >
-            <IoClose size={32} />
+            <IoClose className="text-[17px] text-white/70" />
           </button>
         </div>
 
-        <nav 
+        {/* Brand tag */}
+        <div className="px-7 pt-7">
+          <div className="w-7 h-[1.5px] bg-[#C5A267] rounded-full mb-1.5" />
+          <span className="text-[10px] tracking-[0.22em] uppercase text-white/30 font-sans">
+            Est. 2019
+          </span>
+        </div>
+
+        {/* Nav links */}
+        <nav
           aria-label="Mobile navigation"
-          className="flex flex-col space-y-6 sm:space-y-8 px-8 sm:px-10 mt-6 sm:mt-10 font-serif"
+          className="flex flex-col px-7 mt-9 flex-1 font-serif"
         >
           {navLinks.map((link) => (
-            <Link 
+            <Link
               key={link.path}
-              to={link.path} 
-              onClick={closeDrawer} 
-              className="text-2xl sm:text-3xl text-white hover:text-stone-300 transition-colors relative group w-fit"
+              to={link.path}
+              onClick={link.name === 'Menu' ? handleMenuClick : closeDrawer}
+              className="flex items-center justify-between py-[11px] group"
+              style={{ borderBottom: '0.5px solid rgba(255,255,255,0.06)' }}
             >
-              {link.name}
-              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-[#C5A267] transition-all duration-300 group-hover:w-full"></span>
+              <span className="text-[22px] text-white/90 group-hover:text-white transition-colors tracking-[-0.3px]">
+                {link.name}
+              </span>
+              <IoChevronForward className="text-[#C5A267] text-[14px] opacity-50 group-hover:opacity-100 transition-opacity" />
             </Link>
           ))}
 
-          <button 
+          <button
             type="button"
             onClick={scrollToFooter}
-            className="text-2xl sm:text-3xl text-white hover:text-stone-300 transition-colors relative group w-fit text-left focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="flex items-center justify-between py-[11px] group w-full text-left focus:outline-none"
+            style={{ borderBottom: '0.5px solid rgba(255,255,255,0.06)' }}
           >
-            Locations
-            <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-[#C5A267] transition-all duration-300 group-hover:w-full"></span>
+            <span className="text-[22px] text-white/90 group-hover:text-white transition-colors tracking-[-0.3px]">
+              Locations
+            </span>
+            <IoChevronForward className="text-[#C5A267] text-[14px] opacity-50 group-hover:opacity-100 transition-opacity" />
           </button>
         </nav>
 
-        <div className="absolute bottom-10 px-8 sm:px-10 text-stone-400 text-[10px] sm:text-xs tracking-[0.3em] uppercase select-none">
-          Powered By Niqro
+        {/* Divider + footer */}
+        <div
+          className="mx-7 my-5"
+          style={{ height: '0.5px', background: 'rgba(255,255,255,0.08)' }}
+        />
+        <div className="px-7 pb-7">
+          <span className="text-[9px] tracking-[0.25em] uppercase text-white/20 select-none">
+            Powered by Niqro
+          </span>
         </div>
       </div>
     </>
