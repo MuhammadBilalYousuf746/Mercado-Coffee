@@ -1,13 +1,15 @@
 import React from "react";
+import ReactDOM from "react-dom"; // 1. Ye import add kiya
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 
 const CategoryModal = ({ isOpen, onClose, categories, activeCategory, onSelect }) => {
-  return (
+  // 2. Portal ke liye content ko aik variable mein rakha
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Background Overlay - Snappy Fade */}
+          {/* Background Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -17,12 +19,11 @@ const CategoryModal = ({ isOpen, onClose, categories, activeCategory, onSelect }
             className="fixed inset-0 bg-black/60 z-[10000] backdrop-blur-[2px]"
           />
 
-          {/* Modal Content - Smooth Bottom Sheet Slide */}
+          {/* Modal Content */}
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
-            // Optimized Spring for zero lag and high responsiveness
             transition={{ 
               type: "spring", 
               damping: 30, 
@@ -31,7 +32,7 @@ const CategoryModal = ({ isOpen, onClose, categories, activeCategory, onSelect }
             }}
             className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[24px] z-[10001] max-h-[85vh] overflow-hidden flex flex-col shadow-2xl"
           >
-            {/* Grab Handle for better Mobile UX */}
+            {/* Grab Handle */}
             <div className="w-12 h-1.5 bg-[#3E4235] rounded-full mx-auto mt-3 mb-1" />
 
             {/* Header */}
@@ -45,7 +46,7 @@ const CategoryModal = ({ isOpen, onClose, categories, activeCategory, onSelect }
               </button>
             </div>
 
-            {/* Category List with Stagger Effect */}
+            {/* Category List */}
             <motion.div 
               className="p-4 overflow-y-auto"
               initial="hidden"
@@ -83,6 +84,9 @@ const CategoryModal = ({ isOpen, onClose, categories, activeCategory, onSelect }
       )}
     </AnimatePresence>
   );
+
+  // 3. Render it inside a Portal so it jumps to the top of the DOM
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 export default CategoryModal;
