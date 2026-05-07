@@ -54,14 +54,14 @@ const ProductCard = ({ name, desc, price, type, prices, addon, image }) => {
           from-transparent via-[#C5A267] to-transparent
           opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        {/* Image — no nested motion.div, parent already handles hover scale via CSS */}
+        {/* Image Section - Fixed zoom and gaps */}
         <div className="w-full h-28 sm:h-36 md:h-40 rounded-[12px] sm:rounded-[14px]
           mb-2.5 overflow-hidden bg-zinc-100">
           <img
             src={image}
             alt={name}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300
+            className="w-full h-full object-cover object-center transition-transform duration-300
               group-hover:scale-110"
           />
         </div>
