@@ -57,7 +57,7 @@ function Menu() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-[#3E4235]">
+    <div className="flex flex-col min-h-screen bg-white">
       <CategoryBar
         onCategoryClick={handleCategoryClick}
         activeCategory={activeCategory}

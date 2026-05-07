@@ -54,7 +54,7 @@ const CartDrawer = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setIsCartOpen(false)}
-            className="fixed inset-0 bg-black/60 z-[99] backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 z-99 backdrop-blur-sm"
           />
 
           <motion.div
@@ -63,7 +63,7 @@ const CartDrawer = () => {
             exit={{ x: '100%' }}
             transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
             style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-            className="fixed right-0 top-0 h-[100dvh] w-full sm:w-[420px] z-[100] shadow-2xl flex flex-col bg-[#FAF9F7]"
+            className="fixed right-0 top-0 h-dvh w-full sm:w-105 z-100 shadow-2xl flex flex-col bg-[#FAF9F7]"
           >
             {/* Header */}
             <div className="bg-[#1a1611] px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center shrink-0">
@@ -96,7 +96,7 @@ const CartDrawer = () => {
                 <div className="py-3 px-3 sm:py-4 sm:px-4">
                   {cart.map((item) => (
                     <div key={`${item.id}-${item.variant}`} className="bg-white rounded-2xl p-3 sm:p-4 mb-2.5 flex gap-3 sm:gap-4 shadow-sm border border-stone-100">
-                      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-stone-100 rounded-xl flex-shrink-0 overflow-hidden">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-stone-100 rounded-xl shrink-0 overflow-hidden">
                         <img src={item.image} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -123,8 +123,8 @@ const CartDrawer = () => {
                     <h4 className="text-[13px] font-bold text-[#1a1611] mb-3 ml-1">Popular with your order</h4>
                     <div className="flex gap-2.5 overflow-x-auto pb-3 no-scrollbar -mx-1 px-1" style={{ WebkitOverflowScrolling: 'touch' }}>
                       {SUGGESTIONS.map(item => (
-                        <div key={item.id} className="bg-white p-2.5 rounded-2xl border border-stone-100 min-w-[130px] sm:min-w-[140px] shadow-sm flex-shrink-0">
-                          <div className="h-[70px] sm:h-20 bg-stone-100 rounded-lg mb-2 overflow-hidden">
+                        <div key={item.id} className="bg-white p-2.5 rounded-2xl border border-stone-100 min-w-32.5 sm:min-w-35 shadow-sm shrink-0">
+                          <div className="h-17.5 sm:h-20 bg-stone-100 rounded-lg mb-2 overflow-hidden">
                             <img src={item.image || 'https://via.placeholder.com/150'} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                           </div>
                           <h5 className="text-[10px] font-bold truncate">{item.name}</h5>

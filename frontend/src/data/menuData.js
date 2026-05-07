@@ -82,7 +82,7 @@ export const MERCADO_MENU = [
     items: [
       { id: 301, name: "Caramel Frappe", price: 820, desc: "Velvety caramel blended to perfection",image: "/menu-images/frappes/caramelfrappe.jfif" },
       { id: 302, name: "French Vanilla Frappe", price: 820, desc: "Smooth, aromatic, and timeless",image: "/menu-images/frappes/cookiescreamfrappe.jfif" },
-      { id: 303, name: "Mocha Frappe", price: 820, desc: "Chocolate-rich espresso indulgence",image: "/menu-images/frappes/frenchvanillafrappe.jfif" },
+      { id: 303, name: "Mocha Frappe", price: 820, desc: "Chocolate-rich espresso indulgence",image: "/menu-images/frappes/FrenchVanillaFrappee.png" },
       { id: 304, name: "Nutty Haven Frappe", price: 870, desc: "A luxurious blend of roasted nuts",image: "/menu-images/frappes/lotusfrappe.jfif" },
       { id: 305, name: "Cookies & Cream Frappe", price: 870, desc: "Classic dessert-inspired comfort",image: "/menu-images/frappes/matchafrappe.jfif" },
       { id: 306, name: "Lotus Frappe", price: 890, desc: "Caramelized biscuit bliss",image: "/menu-images/frappes/mochafrappe.jfif" },
@@ -297,12 +297,12 @@ export const MERCADO_MENU = [
       { id: 1906, name: "Sunny-Side Fried Egg", price: 170, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
       { id: 1907, name: "Poached Eggs", price: 300, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
       { id: 1908, name: "Mashed Potato", price: 350, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1909, name: "Bread & Butter", price: 200, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1910, name: "Garlic Mayo", price: 130, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1911, name: "Pickled Mayo", price: 150, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1912, name: "Dynamite Sauce", price: 120, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1913, name: "Honey Mustard", price: 130, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" },
-      { id: 1914, name: "BBQ Sauce", price: 110, desc: "",image: "/menu-images/eggs/forestmushroomomelette.jfif" }
+      { id: 1909, name: "Bread & Butter", price: 200, desc: "",image: "/menu-images/addons/Bread&Butter.png" },
+      { id: 1910, name: "Garlic Mayo", price: 130, desc: "",image: "/menu-images/addons/GarlicMayo.png" },
+      { id: 1911, name: "Pickled Mayo", price: 150, desc: "",image: "/menu-images/addons/PickledMayo.png" },
+      { id: 1912, name: "Dynamite Sauce", price: 120, desc: "",image: "/menu-images/addons/DynamiteSauce.png" },
+      { id: 1913, name: "Honey Mustard", price: 130, desc: "",image: "/menu-images/addons/HoneyMustard.png" },
+      { id: 1914, name: "BBQ Sauce", price: 110, desc: "",image: "/menu-images/addons/BBQSauce.png" }
     ]
   }
 ];

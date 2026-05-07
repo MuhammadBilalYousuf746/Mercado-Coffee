@@ -46,7 +46,7 @@ const SheetContent = ({ item, qty, setQty, note, setNote, options, setOptions, t
           animate={{ opacity: 1, y: 0 }}
           className="flex gap-3 mb-4 items-center"
         >
-          <div className="w-16 h-16 rounded-2xl bg-zinc-100 flex-shrink-0 overflow-hidden border border-zinc-200">
+          <div className="w-16 h-16 rounded-2xl bg-zinc-100 shrink-0 overflow-hidden border border-zinc-200">
             {item.image
               ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
               : <div className="w-full h-full bg-zinc-200" />
@@ -60,14 +60,14 @@ const SheetContent = ({ item, qty, setQty, note, setNote, options, setOptions, t
               <p className="text-zinc-400 text-[11px] mt-0.5 line-clamp-2 leading-snug">{item.desc}</p>
             )}
           </div>
-          <div className="flex-shrink-0 text-right">
+          <div className="shrink-0 text-right">
             <span className="font-black text-sm text-zinc-900">
               Rs. {(item.price || item.prices?.single || 0).toLocaleString()}
             </span>
           </div>
         </motion.div>
 
-        <div className="h-[1px] bg-zinc-100 mb-4" />
+        <div className="h-px bg-zinc-100 mb-4" />
 
         {/* Customization Panel */}
         {item.customizationType && item.customizationType !== 'default' && (
@@ -78,7 +78,7 @@ const SheetContent = ({ item, qty, setQty, note, setNote, options, setOptions, t
               onChange={setOptions}
               item={item}
             />
-            <div className="h-[1px] bg-zinc-100 mt-4 mb-4" />
+            <div className="h-px bg-zinc-100 mt-4 mb-4" />
           </div>
         )}
 
@@ -173,7 +173,7 @@ const AddToCartSheet = ({ item, onClose, onConfirm }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/70 backdrop-blur-[4px] z-[80]"
+          className="fixed inset-0 bg-black/70 backdrop-blur-xs z-80"
         />
       </AnimatePresence>
 
@@ -186,7 +186,7 @@ const AddToCartSheet = ({ item, onClose, onConfirm }) => {
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', damping: 40, stiffness: 400 }}
-          className="sm:hidden fixed bottom-0 left-0 right-0 z-[90] bg-white rounded-t-[30px] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] border-t border-zinc-200 max-h-[92vh] overflow-y-auto"
+          className="sm:hidden fixed bottom-0 left-0 right-0 z-90 bg-white rounded-t-[30px] shadow-[0_-10px_40px_rgba(0,0,0,0.3)] border-t border-zinc-200 max-h-[92vh] overflow-y-auto"
         >
           <SheetContent {...props} isMobile />
         </motion.div>
@@ -197,7 +197,7 @@ const AddToCartSheet = ({ item, onClose, onConfirm }) => {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="hidden sm:block fixed top-[10%] left-1/2 -translate-x-1/2 z-[90] bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.4)] border border-zinc-200 w-full max-w-[440px] max-h-[80vh] overflow-y-auto"
+          className="hidden sm:block fixed top-[10%] left-1/2 -translate-x-1/2 z-90 bg-white rounded-4xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] border border-zinc-200 w-full max-w-110 max-h-[80vh] overflow-y-auto"
         >
           <SheetContent {...props} />
         </motion.div>

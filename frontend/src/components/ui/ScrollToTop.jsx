@@ -54,7 +54,7 @@ const ScrollToTop = () => {
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
           style={{ backgroundColor: "#3E4235" }}
-          className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[9999] 
+          className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-9999 
                      p-3 md:p-4 text-white rounded-full 
                      shadow-2xl backdrop-blur-sm border border-white/10 
                      flex items-center justify-center transition-shadow hover:shadow-[0_0_15px_rgba(62,66,53,0.5)]"

@@ -42,7 +42,7 @@ const OurStory = () => {
 
       <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         {['Ethical Sourcing', 'Small Batches', 'Digital First'].map((pill, i) => (
-          <div key={i} className="p-10 bg-zinc-50 rounded-[32px] border border-zinc-100">
+          <div key={i} className="p-10 bg-zinc-50 rounded-4xl border border-zinc-100">
             <h3 className="font-black uppercase tracking-widest text-sm mb-2">{pill}</h3>
             <div className="h-0.5 w-10 bg-[#C5A267] mx-auto"></div>
           </div>

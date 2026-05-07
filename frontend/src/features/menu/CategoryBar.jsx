@@ -9,8 +9,6 @@ const categories = MERCADO_MENU.map(section => ({
   id: section.id
 }));
 
-// Animation variants hata diye gaye hain taaki initial load par delay na aaye
-
 const CategoryBar = ({ onCategoryClick, activeCategory }) => {
   const scrollRef = useRef(null);
   const buttonRefs = useRef({});
@@ -22,6 +20,29 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
   const animFrame = useRef(null);
   const [dragged, setDragged] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // ── Optimized State ──────────────────────────────────────────
+  const [isAtTop, setIsAtTop] = useState(true);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        // requestAnimationFrame ensures the update happens before the next repaint
+        window.requestAnimationFrame(() => {
+          const top = window.scrollY < 20; // Decreased threshold for faster response
+          setIsAtTop(top);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // passive: true makes scroll listeners much smoother
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Background Scroll Stop Logic
   useEffect(() => {
@@ -45,7 +66,7 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
   };
 
   useEffect(() => {
-    if (!activeCategory || !scrollRef.current) return;
+    if (!activeCategory || !scrollRef.current || isAtTop) return;
     const btn = buttonRefs.current[activeCategory];
     if (!btn) return;
     const bar = scrollRef.current;
@@ -54,7 +75,7 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
     const barWidth = bar.offsetWidth;
     const targetScroll = btnLeft - barWidth / 2 + btnWidth / 2;
     bar.scrollTo({ left: targetScroll, behavior: 'smooth' });
-  }, [activeCategory]);
+  }, [activeCategory, isAtTop]);
 
   const onMouseDown = (e) => {
     isDragging.current = true;
@@ -141,8 +162,8 @@ const CategoryBar = ({ onCategoryClick, activeCategory }) => {
           >
             {cat.label}
             <span
-              className={`absolute bottom-0 left-0 h-[2px] bg-[#C5A267] transition-all duration-200
-                ${activeCategory === cat.id ? 'w-full' : 'w-0 group-hover:w-full'}`}
+              className={`absolute bottom-0 left-0 h-[2px] bg-[#C5A267] transition-all duration-150
+                ${(!isAtTop && activeCategory === cat.id) ? 'w-full' : 'w-0 group-hover:w-full'}`}
             />
           </button>
         ))}
