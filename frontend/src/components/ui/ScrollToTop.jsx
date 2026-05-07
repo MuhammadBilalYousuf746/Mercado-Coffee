@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowUp } from "react-icons/fa";
+import { useCart } from '../../context/CartContext';
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { isCartOpen } = useCart();
 
   useEffect(() => {
     let requestRunning = false;
@@ -15,9 +17,6 @@ const ScrollToTop = () => {
           const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
           const scrollPercent = (scrolled / totalHeight) * 100;
 
-          // Responsive Logic: 
-          // Mobile par ab sirf 5% scroll par hi button aa jayega
-          // Laptop par 25% wala standard hi rahega
           const threshold = window.innerWidth < 768 ? 5 : 25;
 
           if (scrollPercent > threshold) {
@@ -41,20 +40,19 @@ const ScrollToTop = () => {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !isCartOpen && (
         <motion.button
           initial={{ opacity: 0, y: 20, scale: 0.5 }}
-          animate={{ 
-            opacity: 1, 
-            y: 0, 
+          animate={{
+            opacity: 1,
+            y: 0,
             scale: 1,
-            transition: { type: "spring", stiffness: 260, damping: 20 } 
+            transition: { type: "spring", stiffness: 260, damping: 20 }
           }}
           exit={{ opacity: 0, y: 20, scale: 0.5 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          // Inline style use ki hai taaki custom hex color (#3E4235) apply ho sakay
           style={{ backgroundColor: "#3E4235" }}
           className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[9999] 
                      p-3 md:p-4 text-white rounded-full 
